@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMS & Ecommerce Platform Comparator</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --bg2: #f5f5f7;
+  --bg3: #e8e8ed;
+  --txt: #1d1d1f;
+  --txt2: #6e6e73;
+  --accent: #0071e3;
+  --green: #30d158;
+  --orange: #ff9f0a;
+  --red: #ff3b30;
+  --border: rgba(0,0,0,0.09);
+  --border2: rgba(0,0,0,0.16);
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  --r: 12px;
+  --t: 0.25s ease;
+  --header-h: 57px;
+  --filter-h: 54px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000;
+    --bg2: #1c1c1e;
+    --bg3: #2c2c2e;
+    --txt: #f5f5f7;
+    --txt2: #98989d;
+    --border: rgba(255,255,255,0.1);
+    --border2: rgba(255,255,255,0.2);
+    --shadow: 0 2px 16px rgba(0,0,0,0.5);
+  }
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,sans-serif;background:var(--bg);color:var(--txt);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+
+/* ── HEADER ── */
+.hdr{
+  position:sticky;top:0;z-index:300;
+  height:var(--header-h);
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:20px;
+}
+@media(prefers-color-scheme:dark){.hdr{background:rgba(0,0,0,0.9)}}
+.logo{font-size:16px;font-weight:700;letter-spacing:-.3px;white-space:nowrap;flex-shrink:0}
+.logo span{color:var(--accent)}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.counter-badge{
+  background:var(--accent);color:#fff;
+  font-size:12px;font-weight:600;
+  padding:4px 12px;border-radius:20px;white-space:nowrap;
+}
+.reset-btn{
+  padding:5px 14px;border:1.5px solid var(--border2);border-radius:8px;
+  background:transparent;font-size:13px;font-weight:500;color:var(--txt2);
+  transition:var(--t);white-space:nowrap;
+}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+.reset-btn.hidden{display:none}
+
+/* ── FILTER BAR ── */
+.fbar{
+  position:sticky;top:var(--header-h);z-index:250;
+  height:var(--filter-h);
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:saturate(180%) blur(16px);
+  -webkit-backdrop-filter:saturate(180%) blur(16px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;padding:0 24px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.fbar::-webkit-scrollbar{display:none}
+@media(prefers-color-scheme:dark){.fbar{background:rgba(0,0,0,0.92)}}
+
+.filter-group{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.filter-label{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--txt2);white-space:nowrap;margin-right:2px}
+.fpill{
+  padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);
+  background:transparent;font-size:12px;font-weight:500;color:var(--txt2);
+  transition:var(--t);white-space:nowrap;
+}
+.fpill:hover{border-color:var(--accent);color:var(--txt)}
+.fpill.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.fsep{width:1px;height:24px;background:var(--border2);flex-shrink:0;margin:0 2px}
+
+.fsearch{
+  padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);
+  background:var(--bg2);font-size:13px;color:var(--txt);
+  outline:none;width:170px;transition:var(--t);
+}
+.fsearch:focus{border-color:var(--accent);background:var(--bg)}
+.fsearch::placeholder{color:var(--txt2)}
+
+/* ── MAIN ── */
+.main{padding:0 0 80px}
+
+/* ── TABLE WRAPPER ── */
+.tbl-wrap{
+  overflow-x:auto;
+  overflow-y:visible;
+}
+
+/* ── TABLE ── */
+.ctbl{
+  border-collapse:collapse;
+  width:max-content;
+  min-width:100%;
+}
+
+/* Sticky column header row */
+.ctbl thead tr{
+  position:sticky;
+  top:calc(var(--header-h) + var(--filter-h));
+  z-index:150;
+  background:var(--bg);
+}
+
+/* Sticky first column */
+.ctbl td:first-child,
+.ctbl th:first-child{
+  position:sticky;left:0;z-index:50;background:var(--bg);
+}
+/* Even rows */
+.ctbl tbody tr.frow:nth-child(even) td{background:var(--bg2)}
+.ctbl tbody tr.frow:nth-child(even) td:first-child{background:var(--bg2)}
+
+/* Corner cell (top-left): sticky in both directions */
+.ctbl thead tr th:first-child{
+  position:sticky;left:0;top:calc(var(--header-h)+var(--filter-h));
+  z-index:200;background:var(--bg);
+}
+
+/* Platform header cell */
+.pth{
+  min-width:150px;max-width:175px;
+  padding:14px 10px 10px;
+  border-left:1px solid var(--border);
+  vertical-align:top;text-align:center;
+  background:var(--bg);
+  transition:opacity var(--t);
+}
+.pth.hidden-col{display:none}
+
+.p-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;
+  margin:0 auto 6px;transition:var(--t);
+}
+.p-name{font-size:12px;font-weight:600;margin-bottom:3px;line-height:1.25;color:var(--txt)}
+.cat-badge{
+  display:inline-block;padding:1px 7px;border-radius:6px;
+  font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  margin-bottom:3px;
+}
+.cat-badge.cms{background:rgba(0,113,227,0.12);color:var(--accent)}
+.cat-badge.ec{background:rgba(48,209,88,0.14);color:#1a7f40}
+@media(prefers-color-scheme:dark){.cat-badge.ec{color:#30d158}}
+.tier-badge{
+  display:inline-block;padding:2px 7px;border-radius:8px;
+  font-size:9px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;
+  color:#fff;margin-bottom:6px;
+}
+.specbar{
+  position:relative;height:4px;border-radius:2px;margin:4px 6px 2px;
+  background:linear-gradient(90deg,#30d158,#ff9f0a 50%,#ff3b30);
+  cursor:pointer;
+}
+.specdot{
+  position:absolute;top:50%;transform:translate(-50%,-50%);
+  width:10px;height:10px;border-radius:50%;
+  background:#fff;border:2px solid rgba(0,0,0,.35);
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+  transition:transform var(--t);
+}
+.specbar:hover .specdot{transform:translate(-50%,-50%) scale(1.5)}
+.specbar:hover .spec-tip{opacity:1}
+.spec-tip{
+  position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  background:var(--txt);color:var(--bg);
+  font-size:11px;padding:4px 8px;border-radius:6px;
+  white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;
+  z-index:999;
+}
+
+/* Feature column header (corner) */
+.th-feat{
+  min-width:220px;max-width:250px;
+  padding:14px 16px;text-align:left;
+  font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--txt2);border-right:1px solid var(--border);
+}
+
+/* Group row */
+.ctbl tbody tr.grow td{
+  padding:9px 16px;background:var(--bg2)!important;
+  font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--txt2);cursor:pointer;user-select:none;
+  border-bottom:1px solid var(--border);
+}
+.ctbl tbody tr.grow td:first-child{
+  border-right:1px solid var(--border);
+  display:flex;align-items:center;gap:7px;
+  background:var(--bg2)!important;
+}
+.chev{display:inline-block;transition:transform .2s;font-size:9px}
+.grow.col .chev{transform:rotate(-90deg)}
+
+/* Feature row */
+.ctbl tbody tr.frow{cursor:pointer;transition:background .12s}
+.ctbl tbody tr.frow:hover td{background:rgba(0,113,227,0.04)!important}
+.ctbl tbody tr.frow td{
+  padding:10px 16px;border-bottom:1px solid var(--border);
+  font-size:13px;text-align:center;transition:opacity var(--t);
+}
+.ctbl tbody tr.frow td:first-child{
+  text-align:left;border-right:1px solid var(--border);
+  font-size:13px;color:var(--txt);
+}
+.ctbl tbody tr.frow td.hidden-col{display:none}
+
+/* Cell value */
+.cv1{color:var(--green);font-size:16px}
+.cv5{color:var(--orange);font-size:16px}
+.cv0{color:var(--red);font-size:16px;opacity:.65}
+.cvt{font-size:11.5px;font-weight:500;color:var(--txt);
+  display:inline-block;padding:2px 7px;background:var(--bg2);border-radius:5px;line-height:1.4}
+
+/* Pulse/fade on row highlight */
+@keyframes pglow{
+  0%{transform:scale(1);box-shadow:0 0 0 0 rgba(48,209,88,.65)}
+  45%{transform:scale(1.18);box-shadow:0 0 0 10px rgba(48,209,88,0)}
+  100%{transform:scale(1);box-shadow:0 0 0 0 rgba(48,209,88,0)}
+}
+.pth.hl-yes .p-icon{animation:pglow .7s ease}
+.pth.hl-no .p-icon{opacity:.28;transform:scale(.96)}
+.pth.hl-no .p-name,.pth.hl-no .cat-badge,.pth.hl-no .tier-badge{opacity:.3}
+
+/* ── FIT SECTION ── */
+.fit-sec{padding:48px 24px 0}
+.sec-title{font-size:24px;font-weight:700;letter-spacing:-.4px;margin-bottom:5px}
+.sec-sub{font-size:14px;color:var(--txt2);margin-bottom:24px}
+.fit-scroll{display:flex;gap:16px;overflow-x:auto;padding-bottom:12px;align-items:flex-start}
+.fit-scroll::-webkit-scrollbar{height:4px}
+.fit-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.fit-card{
+  background:var(--bg2);border-radius:var(--r);
+  padding:20px;min-width:245px;flex-shrink:0;
+  box-shadow:var(--shadow);
+}
+.fit-card.hidden-col{display:none}
+.fc-head{display:flex;align-items:center;gap:10px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.fc-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.fc-name{font-size:13px;font-weight:600;line-height:1.2}
+.fc-tier{font-size:11px;color:var(--txt2)}
+.donuts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dw{display:flex;flex-direction:column;align-items:center;gap:5px}
+.dsvg{width:64px;height:64px;overflow:visible}
+.dbg{fill:none;stroke:var(--border2);stroke-width:5}
+.dring{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;
+  transform-origin:50% 50%;transform:rotate(-90deg);
+  stroke-dasharray:150.8;stroke-dashoffset:150.8;
+  transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+.dpct{font-size:12px;font-weight:700;fill:var(--txt);dominant-baseline:middle;text-anchor:middle}
+.dlbl{font-size:10px;color:var(--txt2);text-align:center;line-height:1.3;max-width:66px}
+
+/* ── SCROLLBARS ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* No-results */
+.no-results{padding:60px 24px;text-align:center;color:var(--txt2);font-size:15px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="logo">Platform <span>Comparator</span></div>
+  <div class="hdr-right">
+    <span class="counter-badge" id="counter-badge">Zobrazeno: — platforem</span>
+    <button class="reset-btn hidden" id="reset-btn">✕ Resetovat filtry</button>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="fbar" id="fbar">
+
+  <div class="filter-group">
+    <span class="filter-label">Kategorie</span>
+    <button class="fpill on" data-ftype="cat" data-fval="all">Všechny</button>
+    <button class="fpill" data-ftype="cat" data-fval="cms">CMS / DXP</button>
+    <button class="fpill" data-ftype="cat" data-fval="ec">Ecommerce</button>
+  </div>
+
+  <div class="fsep"></div>
+
+  <div class="filter-group">
+    <span class="filter-label">Tier</span>
+    <button class="fpill on" data-ftype="tier" data-fval="all">Všechny</button>
+    <button class="fpill" data-ftype="tier" data-fval="open-source">Open Source</button>
+    <button class="fpill" data-ftype="tier" data-fval="saas-cloud">SaaS / Cloud</button>
+    <button class="fpill" data-ftype="tier" data-fval="headless">Headless CMS</button>
+    <button class="fpill" data-ftype="tier" data-fval="mid-market">Mid-Market</button>
+    <button class="fpill" data-ftype="tier" data-fval="enterprise">Enterprise</button>
+  </div>
+
+  <div class="fsep"></div>
+
+  <div class="filter-group">
+    <span class="filter-label">Tech</span>
+    <button class="fpill on" data-ftype="tech" data-fval="all">Všechny</button>
+    <button class="fpill" data-ftype="tech" data-fval="dotnet">.NET</button>
+    <button class="fpill" data-ftype="tech" data-fval="php">PHP</button>
+    <button class="fpill" data-ftype="tech" data-fval="js">JavaScript</button>
+    <button class="fpill" data-ftype="tech" data-fval="java">Java</button>
+  </div>
+
+  <div class="fsep"></div>
+
+  <input class="fsearch" id="fsearch" type="search" placeholder="🔍 Hledat platformu…" autocomplete="off">
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="tbl-wrap">
+    <table class="ctbl" id="ctbl"></table>
+  </div>
+  <div id="fit-area"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════════════════
+
+// filterTier values: open-source | saas-cloud | headless | mid-market | enterprise
+// tech array: dotnet | php | js | java | proprietary
+
+const ALL_PLATFORMS = [
+  // ─── Priority block (shown first) ───────────────────────────
+  {
+    id:'umbraco', name:'Umbraco CMS', cat:'cms', tier:1, filterTier:'open-source',
+    color:'#3544B1', abbr:'UM', tech:['dotnet'],
+    licensePos:3, pricingTooltip:'Open Source (.NET), zdarma. Hosting vlastní server.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní / cloud', migration:'Střední',
+      stack:'.NET / C#', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0, personalize:0.5, email_mktg:0, analytics:0,
+      native_ec:0.5, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:0, vendor_lock:'Low',
+      dev_community:'Medium', agency:'Medium', upgrades:'Medium',
+    },
+    fit:{small:45,mid:70,enterprise:55,ecommerce:35,noecommerce:80,multisite:70}
+  },
+  {
+    id:'kontentai', name:'Kontent.ai', cat:'cms', tier:3, filterTier:'headless',
+    color:'#EF5934', abbr:'KA', tech:['js'],
+    licensePos:42, pricingTooltip:'SaaS headless CMS. Developer free; Business od ~$1200/měs.',
+    f:{
+      license_model:'SaaS', cost_level:'€€', hosting:'Vendor cloud', migration:'Nízké',
+      stack:'JS / API', headless:1, mach:1, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0.5, personalize:0.5, email_mktg:0, analytics:0.5,
+      native_ec:0, b2b:0, headless_ec:1, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'High',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Medium', agency:'Medium', upgrades:'Low',
+    },
+    fit:{small:35,mid:70,enterprise:65,ecommerce:40,noecommerce:80,multisite:80}
+  },
+  {
+    id:'orchard', name:'Orchard Core', cat:'cms', tier:1, filterTier:'open-source',
+    color:'#5c2d91', abbr:'OC', tech:['dotnet'],
+    licensePos:2, pricingTooltip:'Open Source (.NET/C#), zdarma. Hosting vlastní.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní / cloud', migration:'Střední',
+      stack:'.NET / C#', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0, personalize:0.5, email_mktg:0, analytics:0,
+      native_ec:0, b2b:0, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'Low', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:30,mid:55,enterprise:50,ecommerce:15,noecommerce:70,multisite:65}
+  },
+  {
+    id:'sulu', name:'Sulu CMS', cat:'cms', tier:1, filterTier:'open-source',
+    color:'#3e4d6c', abbr:'SU', tech:['php'],
+    licensePos:2, pricingTooltip:'Open Source (PHP/Symfony), zdarma. Ideální pro vícejazyčné weby.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní', migration:'Střední',
+      stack:'PHP (Symfony)', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0, personalize:0, email_mktg:0, analytics:0,
+      native_ec:0, b2b:0, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'Low', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:25,mid:60,enterprise:40,ecommerce:10,noecommerce:75,multisite:70}
+  },
+  {
+    id:'sylius', name:'Sylius', cat:'cms', tier:1, filterTier:'open-source',
+    color:'#1a74bc', abbr:'SY', tech:['php'],
+    licensePos:3, pricingTooltip:'Open Source (PHP/Symfony, MIT), zdarma. B2B e-commerce framework.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní / cloud', migration:'Střední',
+      stack:'PHP (Symfony)', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0, personalize:0, email_mktg:0, analytics:0,
+      native_ec:1, b2b:1, headless_ec:1, erp:0.5,
+      wysiwyg:0.5, block_editor:0, workflow:0.5, nontechnical:'Low',
+      sso:0.5, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'Medium', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:20,mid:60,enterprise:50,ecommerce:85,noecommerce:5,multisite:55}
+  },
+  {
+    id:'aem', name:'Adobe Experience Manager', cat:'cms', tier:5, filterTier:'enterprise',
+    color:'#FA0F00', abbr:'AEM', tech:['java'],
+    licensePos:95, pricingTooltip:'Enterprise. AEMaaCS od ~$100K/rok. Adobe Experience Cloud suite.',
+    f:{
+      license_model:'Enterprise License', cost_level:'€€€€', hosting:'Adobe Cloud / AMS', migration:'Vysoké',
+      stack:'Java', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:1, personalize:1, email_mktg:1, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:2,mid:15,enterprise:95,ecommerce:70,noecommerce:80,multisite:90}
+  },
+  {
+    id:'sitecore', name:'Sitecore XM Cloud', cat:'cms', tier:5, filterTier:'enterprise',
+    color:'#EB3D00', abbr:'SC', tech:['dotnet'],
+    licensePos:85, pricingTooltip:'Enterprise SaaS. Od ~$60K/rok. Composable DXP na .NET.',
+    f:{
+      license_model:'Enterprise SaaS', cost_level:'€€€€', hosting:'Vendor cloud', migration:'Vysoké',
+      stack:'.NET / C#', headless:1, mach:1, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:1, personalize:1, email_mktg:1, analytics:1,
+      native_ec:0.5, b2b:0.5, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'Low', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:2,mid:20,enterprise:92,ecommerce:60,noecommerce:80,multisite:92}
+  },
+  {
+    id:'wordpress', name:'WordPress', cat:'cms', tier:1, filterTier:'open-source',
+    color:'#21759b', abbr:'WP', tech:['php'],
+    licensePos:2, pricingTooltip:'Open Source (PHP), zdarma. Největší CMS na světě. Hosting od ~€5/měs.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní / cloud', migration:'Nízké',
+      stack:'PHP', headless:0.5, mach:0, multisite:1, i18n:0.5,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:0.5,
+      native_ec:0.5, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:0.5, nontechnical:'High',
+      sso:0.5, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'High', agency:'High', upgrades:'Low',
+    },
+    fit:{small:90,mid:55,enterprise:20,ecommerce:70,noecommerce:85,multisite:60}
+  },
+  {
+    id:'drupal', name:'Drupal', cat:'cms', tier:1, filterTier:'open-source',
+    color:'#0678BE', abbr:'DR', tech:['php'],
+    licensePos:3, pricingTooltip:'Open Source (PHP), zdarma. Enterprise-grade CMS. Hosting od ~€20/měs.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní / cloud', migration:'Vysoké',
+      stack:'PHP', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:0.5,
+      native_ec:0.5, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'Medium', agency:'Medium', upgrades:'High',
+    },
+    fit:{small:20,mid:60,enterprise:70,ecommerce:40,noecommerce:75,multisite:80}
+  },
+  // ─── Rest of CMS ─────────────────────────────────────────────
+  {
+    id:'strapi', name:'Strapi', cat:'cms', tier:1, filterTier:'open-source',
+    color:'#4945FF', abbr:'ST', tech:['js'],
+    licensePos:8, pricingTooltip:'Open Source self-hosted zdarma; Strapi Cloud od ~$29/měs.',
+    f:{
+      license_model:'OS + SaaS', cost_level:'€0 / €€', hosting:'Vlastní / cloud', migration:'Nízké',
+      stack:'Node.js', headless:1, mach:1, multisite:0.5, i18n:1,
+      mktg_auto:0, ab_test:0, personalize:0, email_mktg:0, analytics:0,
+      native_ec:0, b2b:0, headless_ec:0.5, erp:0.5,
+      wysiwyg:0.5, block_editor:1, workflow:0.5, nontechnical:'Low',
+      sso:0.5, gdpr:0.5, sla:0.5, vendor_lock:'Low',
+      dev_community:'Medium', agency:'Low', upgrades:'Low',
+    },
+    fit:{small:50,mid:65,enterprise:30,ecommerce:20,noecommerce:80,multisite:40}
+  },
+  {
+    id:'umbraco_cloud', name:'Umbraco Cloud', cat:'cms', tier:2, filterTier:'saas-cloud',
+    color:'#3544B1', abbr:'UC', tech:['dotnet'],
+    licensePos:35, pricingTooltip:'SaaS (.NET). Od €39/měs. (Starter) po €799/měs. (Enterprise).',
+    f:{
+      license_model:'SaaS', cost_level:'€€', hosting:'Vendor cloud', migration:'Střední',
+      stack:'.NET / C#', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0, personalize:0.5, email_mktg:0, analytics:0.5,
+      native_ec:0.5, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Medium', agency:'Medium', upgrades:'Low',
+    },
+    fit:{small:40,mid:75,enterprise:60,ecommerce:40,noecommerce:80,multisite:70}
+  },
+  {
+    id:'storyblok', name:'Storyblok', cat:'cms', tier:2, filterTier:'saas-cloud',
+    color:'#09B3AF', abbr:'SB', tech:['js'],
+    licensePos:40, pricingTooltip:'Headless CMS SaaS. Free tier; Growth od ~$99/měs.; Enterprise custom.',
+    f:{
+      license_model:'SaaS', cost_level:'€€', hosting:'Vendor cloud', migration:'Nízké',
+      stack:'JS / API', headless:1, mach:1, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0.5, personalize:0.5, email_mktg:0, analytics:0.5,
+      native_ec:0, b2b:0, headless_ec:1, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'High',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'Low',
+    },
+    fit:{small:55,mid:75,enterprise:65,ecommerce:50,noecommerce:80,multisite:80}
+  },
+  {
+    id:'acquia', name:'Acquia', cat:'cms', tier:2, filterTier:'saas-cloud',
+    color:'#73BA25', abbr:'AC', tech:['php'],
+    licensePos:65, pricingTooltip:'SaaS (Drupal-based). Od ~$30K/rok. Enterprise DXP cloud.',
+    f:{
+      license_model:'SaaS (Drupal)', cost_level:'€€€', hosting:'Vendor cloud', migration:'Střední',
+      stack:'PHP (Drupal)', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:0.5, personalize:1, email_mktg:0.5, analytics:1,
+      native_ec:0.5, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:5,mid:40,enterprise:80,ecommerce:40,noecommerce:75,multisite:85}
+  },
+  {
+    id:'sanity', name:'Sanity.io', cat:'cms', tier:3, filterTier:'headless',
+    color:'#F03E2F', abbr:'SN', tech:['js'],
+    licensePos:10, pricingTooltip:'Free tier (generous); Growth od ~$15/uživatele/měs. GROQ query language.',
+    f:{
+      license_model:'SaaS', cost_level:'€0 / €€', hosting:'Vendor cloud', migration:'Nízké',
+      stack:'JS / React', headless:1, mach:1, multisite:1, i18n:0.5,
+      mktg_auto:0, ab_test:0, personalize:0, email_mktg:0, analytics:0,
+      native_ec:0, b2b:0, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:0.5, nontechnical:'Medium',
+      sso:0.5, gdpr:1, sla:0.5, vendor_lock:'Low',
+      dev_community:'Low', agency:'Low', upgrades:'Low',
+    },
+    fit:{small:55,mid:65,enterprise:50,ecommerce:20,noecommerce:85,multisite:70}
+  },
+  {
+    id:'contentful', name:'Contentful', cat:'cms', tier:3, filterTier:'headless',
+    color:'#2478CC', abbr:'CF', tech:['js'],
+    licensePos:50, pricingTooltip:'SaaS headless CMS. Free (Community); Team ~$300/měs.; Enterprise custom.',
+    f:{
+      license_model:'SaaS', cost_level:'€€ / €€€', hosting:'Vendor cloud', migration:'Nízké',
+      stack:'JS / API', headless:1, mach:1, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0.5, personalize:0.5, email_mktg:0, analytics:0.5,
+      native_ec:0, b2b:0, headless_ec:1, erp:0.5,
+      wysiwyg:0.5, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'Low',
+    },
+    fit:{small:40,mid:70,enterprise:75,ecommerce:35,noecommerce:80,multisite:85}
+  },
+  {
+    id:'kentico', name:'Kentico Xperience', cat:'cms', tier:4, filterTier:'mid-market',
+    color:'#F05A22', abbr:'KX', tech:['dotnet'],
+    licensePos:60, pricingTooltip:'Subscription (.NET DXP). Od ~€12K/rok. All-in-one platforma.',
+    f:{
+      license_model:'Subscription', cost_level:'€€€', hosting:'Cloud / vlastní', migration:'Střední',
+      stack:'.NET / C#', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:1, personalize:1, email_mktg:1, analytics:1,
+      native_ec:1, b2b:0.5, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'High',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'High', agency:'High', upgrades:'Medium',
+    },
+    fit:{small:25,mid:80,enterprise:75,ecommerce:65,noecommerce:80,multisite:85}
+  },
+  {
+    id:'liferay', name:'Liferay DXP', cat:'cms', tier:4, filterTier:'mid-market',
+    color:'#004b82', abbr:'LF', tech:['java'],
+    licensePos:55, pricingTooltip:'Community zdarma; Enterprise DXP od ~$50K/rok. Java portal platforma.',
+    f:{
+      license_model:'OS / Enterprise', cost_level:'€0 / €€€€', hosting:'Vlastní / cloud', migration:'Vysoké',
+      stack:'Java', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:1, personalize:1, email_mktg:0.5, analytics:1,
+      native_ec:0.5, b2b:1, headless_ec:0.5, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:5,mid:30,enterprise:80,ecommerce:45,noecommerce:70,multisite:85}
+  },
+  {
+    id:'optimizely', name:'Optimizely', cat:'cms', tier:5, filterTier:'enterprise',
+    color:'#006BDA', abbr:'OP', tech:['dotnet'],
+    licensePos:85, pricingTooltip:'Enterprise SaaS (.NET). Od ~$50K/rok. DXP + A/B testing platforma.',
+    f:{
+      license_model:'Enterprise SaaS', cost_level:'€€€€', hosting:'Vendor cloud / hybrid', migration:'Vysoké',
+      stack:'.NET / C#', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:1, personalize:1, email_mktg:1, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'Low', agency:'Medium', upgrades:'High',
+    },
+    fit:{small:2,mid:25,enterprise:90,ecommerce:70,noecommerce:75,multisite:90}
+  },
+  // ─── ECOMMERCE ────────────────────────────────────────────────
+  {
+    id:'woocommerce', name:'WooCommerce', cat:'ec', tier:1, filterTier:'open-source',
+    color:'#96588A', abbr:'WC', tech:['php'],
+    licensePos:2, pricingTooltip:'Open Source (PHP/WordPress), zdarma. #1 e-commerce plugin. Hosting od €5/měs.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní', migration:'Nízké',
+      stack:'PHP', headless:0.5, mach:0, multisite:0.5, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:1,
+      native_ec:1, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:0.5, nontechnical:'Medium',
+      sso:0.5, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'High', agency:'High', upgrades:'Low',
+    },
+    fit:{small:90,mid:55,enterprise:15,ecommerce:100,noecommerce:5,multisite:35}
+  },
+  {
+    id:'prestashop', name:'PrestaShop', cat:'ec', tier:1, filterTier:'open-source',
+    color:'#DF0067', abbr:'PS', tech:['php'],
+    licensePos:3, pricingTooltip:'Open Source (PHP), zdarma. Populární v jižní Evropě a FR/ES trhu.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní', migration:'Střední',
+      stack:'PHP', headless:0.5, mach:0, multisite:0.5, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:0.5,
+      native_ec:1, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:0.5, workflow:0, nontechnical:'Medium',
+      sso:0.5, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'Medium', agency:'Medium', upgrades:'Medium',
+    },
+    fit:{small:75,mid:60,enterprise:20,ecommerce:100,noecommerce:5,multisite:30}
+  },
+  {
+    id:'smartstore', name:'Smartstore / nopCommerce', cat:'ec', tier:1, filterTier:'open-source',
+    color:'#3A5FBF', abbr:'SM', tech:['dotnet'],
+    licensePos:3, pricingTooltip:'Open Source (.NET), zdarma. Oblíbené v DACH regionu. Enterprise podpora od €5K/rok.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní', migration:'Střední',
+      stack:'.NET / C#', headless:0.5, mach:0, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:0.5,
+      native_ec:1, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:0.5, workflow:0, nontechnical:'Medium',
+      sso:0.5, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'Medium', agency:'Medium', upgrades:'Medium',
+    },
+    fit:{small:70,mid:65,enterprise:25,ecommerce:100,noecommerce:5,multisite:45}
+  },
+  {
+    id:'opencart', name:'OpenCart', cat:'ec', tier:1, filterTier:'open-source',
+    color:'#57A9E2', abbr:'OC', tech:['php'],
+    licensePos:2, pricingTooltip:'Open Source (PHP), zdarma. Jednoduchý a lehký e-shop systém.',
+    f:{
+      license_model:'Open Source', cost_level:'€0', hosting:'Vlastní', migration:'Nízké',
+      stack:'PHP', headless:0, mach:0, multisite:0, i18n:1,
+      mktg_auto:0.5, ab_test:0, personalize:0, email_mktg:0.5, analytics:0.5,
+      native_ec:1, b2b:0, headless_ec:0, erp:0.5,
+      wysiwyg:1, block_editor:0, workflow:0, nontechnical:'High',
+      sso:0, gdpr:0.5, sla:0, vendor_lock:'Low',
+      dev_community:'Low', agency:'Low', upgrades:'Low',
+    },
+    fit:{small:80,mid:30,enterprise:5,ecommerce:100,noecommerce:5,multisite:10}
+  },
+  {
+    id:'shoptet', name:'Shoptet / Upgates', cat:'ec', tier:2, filterTier:'saas-cloud',
+    color:'#E8792A', abbr:'SH', tech:[],
+    licensePos:30, pricingTooltip:'SaaS. Shoptet od ~€20/měs.; Upgates od €30/měs. CZ/SK fokus.',
+    f:{
+      license_model:'SaaS', cost_level:'€€', hosting:'Vendor cloud', migration:'Nízké',
+      stack:'Proprietární', headless:0, mach:0, multisite:0.5, i18n:0.5,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:1,
+      native_ec:1, b2b:0.5, headless_ec:0, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:0, nontechnical:'High',
+      sso:0, gdpr:1, sla:0.5, vendor_lock:'High',
+      dev_community:'High', agency:'High', upgrades:'Low',
+    },
+    fit:{small:90,mid:50,enterprise:5,ecommerce:100,noecommerce:2,multisite:20}
+  },
+  {
+    id:'wix', name:'Wix / Squarespace', cat:'ec', tier:2, filterTier:'saas-cloud',
+    color:'#0C6EFC', abbr:'WX', tech:[],
+    licensePos:30, pricingTooltip:'SaaS. Wix od €17/měs. Jednoduchý drag-and-drop builder.',
+    f:{
+      license_model:'SaaS', cost_level:'€€', hosting:'Vendor cloud', migration:'Nízké',
+      stack:'Proprietární', headless:0, mach:0, multisite:0, i18n:0.5,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:1,
+      native_ec:1, b2b:0, headless_ec:0, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:0, nontechnical:'High',
+      sso:0, gdpr:0.5, sla:0, vendor_lock:'High',
+      dev_community:'Medium', agency:'Medium', upgrades:'Low',
+    },
+    fit:{small:95,mid:25,enterprise:2,ecommerce:95,noecommerce:20,multisite:5}
+  },
+  {
+    id:'shopify', name:'Shopify', cat:'ec', tier:2, filterTier:'saas-cloud',
+    color:'#96BF48', abbr:'SP', tech:[],
+    licensePos:35, pricingTooltip:'SaaS. Basic ~$29/měs.; Shopify $79; Advanced $299/měs. Liquid templating.',
+    f:{
+      license_model:'SaaS', cost_level:'€€', hosting:'Vendor cloud', migration:'Nízké',
+      stack:'Proprietární / Liquid', headless:0.5, mach:0.5, multisite:0, i18n:0.5,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:1, analytics:1,
+      native_ec:1, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:0.5, nontechnical:'High',
+      sso:0, gdpr:0.5, sla:0.5, vendor_lock:'High',
+      dev_community:'High', agency:'High', upgrades:'Low',
+    },
+    fit:{small:90,mid:60,enterprise:25,ecommerce:100,noecommerce:5,multisite:30}
+  },
+  {
+    id:'bigcommerce', name:'BigCommerce', cat:'ec', tier:3, filterTier:'mid-market',
+    color:'#34313F', abbr:'BC', tech:[],
+    licensePos:55, pricingTooltip:'SaaS. Standard $39/měs.; Plus $105; Pro $399; Enterprise custom.',
+    f:{
+      license_model:'SaaS', cost_level:'€€€', hosting:'Vendor cloud', migration:'Střední',
+      stack:'Proprietární / API', headless:1, mach:0.5, multisite:0.5, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:0.5, nontechnical:'High',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'Low',
+    },
+    fit:{small:50,mid:80,enterprise:60,ecommerce:100,noecommerce:5,multisite:50}
+  },
+  {
+    id:'shopify_plus', name:'Shopify Plus', cat:'ec', tier:3, filterTier:'mid-market',
+    color:'#5C6AC4', abbr:'SP+', tech:[],
+    licensePos:60, pricingTooltip:'SaaS Enterprise. Od $2000/měs. nebo revenue share. B2B on Shopify.',
+    f:{
+      license_model:'Enterprise SaaS', cost_level:'€€€', hosting:'Vendor cloud', migration:'Střední',
+      stack:'Proprietární / Hydrogen', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:0.5, personalize:0.5, email_mktg:1, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'High',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'High', agency:'High', upgrades:'Low',
+    },
+    fit:{small:30,mid:75,enterprise:70,ecommerce:100,noecommerce:5,multisite:70}
+  },
+  {
+    id:'commercetools', name:'commercetools', cat:'ec', tier:3, filterTier:'mid-market',
+    color:'#1A9CD8', abbr:'CT', tech:['js'],
+    licensePos:80, pricingTooltip:'API-first SaaS. Usage-based od ~$50K/rok. MACH native commerce.',
+    f:{
+      license_model:'SaaS (API-first)', cost_level:'€€€€', hosting:'Vendor cloud / hybrid', migration:'Vysoké',
+      stack:'API / JS SDK', headless:1, mach:1, multisite:1, i18n:1,
+      mktg_auto:0, ab_test:0, personalize:0, email_mktg:0, analytics:0.5,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:0, block_editor:0, workflow:0.5, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Low',
+      dev_community:'Low', agency:'Low', upgrades:'Low',
+    },
+    fit:{small:5,mid:30,enterprise:85,ecommerce:100,noecommerce:2,multisite:90}
+  },
+  {
+    id:'adobe_commerce', name:'Adobe Commerce', cat:'ec', tier:4, filterTier:'enterprise',
+    color:'#EE3523', abbr:'AC', tech:['php'],
+    licensePos:50, pricingTooltip:'Magento Open Source zdarma; Adobe Commerce cloud od ~$22K/rok.',
+    f:{
+      license_model:'OS / Enterprise', cost_level:'€0 / €€€€', hosting:'Vlastní / cloud', migration:'Vysoké',
+      stack:'PHP', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:0.5, sla:1, vendor_lock:'Medium',
+      dev_community:'Medium', agency:'Medium', upgrades:'High',
+    },
+    fit:{small:10,mid:55,enterprise:80,ecommerce:100,noecommerce:2,multisite:75}
+  },
+  {
+    id:'shopware', name:'Shopware', cat:'ec', tier:4, filterTier:'enterprise',
+    color:'#189EFF', abbr:'SW', tech:['php'],
+    licensePos:30, pricingTooltip:'Community (PHP/Symfony) zdarma; Rise ~€600/měs.; Enterprise custom.',
+    f:{
+      license_model:'OS / SaaS', cost_level:'€0 / €€€', hosting:'Vlastní / cloud', migration:'Střední',
+      stack:'PHP (Symfony)', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:1, personalize:1, email_mktg:0.5, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Low',
+      dev_community:'Low', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:30,mid:70,enterprise:75,ecommerce:100,noecommerce:2,multisite:70}
+  },
+  {
+    id:'sfcc', name:'Salesforce Commerce Cloud', cat:'ec', tier:4, filterTier:'enterprise',
+    color:'#00A1E0', abbr:'SF', tech:[],
+    licensePos:90, pricingTooltip:'Enterprise SaaS. Revenue share (1–3%) + licence. Od ~$150K/rok.',
+    f:{
+      license_model:'Enterprise SaaS', cost_level:'€€€€', hosting:'Vendor cloud', migration:'Vysoké',
+      stack:'Proprietární (SFRA)', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:1, personalize:1, email_mktg:1, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:2,mid:20,enterprise:90,ecommerce:100,noecommerce:2,multisite:85}
+  },
+  {
+    id:'sap', name:'SAP Commerce Cloud', cat:'ec', tier:4, filterTier:'enterprise',
+    color:'#0074CB', abbr:'SAP', tech:['java'],
+    licensePos:95, pricingTooltip:'Enterprise (Java). Od ~$200K/rok. Nativní integrace SAP ERP.',
+    f:{
+      license_model:'Enterprise License', cost_level:'€€€€', hosting:'SAP BTP / on-premise', migration:'Vysoké',
+      stack:'Java', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:0.5, personalize:1, email_mktg:1, analytics:1,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:0.5, block_editor:0.5, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:2,mid:20,enterprise:95,ecommerce:100,noecommerce:2,multisite:85}
+  },
+];
+
+const FEAT_GROUPS = [
+  {id:'cost',label:'💰 Licenční a nákladová struktura',feats:[
+    {id:'license_model',label:'Licenční model'},
+    {id:'cost_level',label:'Přibližná roční cena licence'},
+    {id:'hosting',label:'Hostingová flexibilita'},
+    {id:'migration',label:'Náklady na migraci'},
+  ]},
+  {id:'tech',label:'🛠 Technologie a architektura',feats:[
+    {id:'stack',label:'Technologický stack'},
+    {id:'headless',label:'Headless / API-first podpora'},
+    {id:'mach',label:'Kompozitní architektura (MACH)'},
+    {id:'multisite',label:'Multi-site management'},
+    {id:'i18n',label:'Vícejazyčný obsah (i18n / L10n)'},
+  ]},
+  {id:'mktg',label:'📣 Marketing a DX funkce',feats:[
+    {id:'mktg_auto',label:'Nativní marketingová automatizace'},
+    {id:'ab_test',label:'A/B testování (nativní)'},
+    {id:'personalize',label:'Personalizace obsahu'},
+    {id:'email_mktg',label:'E-mail marketing (nativní)'},
+    {id:'analytics',label:'Analytika a reporting (nativní)'},
+  ]},
+  {id:'ec',label:'🛒 E-commerce',feats:[
+    {id:'native_ec',label:'Nativní e-commerce modul'},
+    {id:'b2b',label:'B2B prodej / cenové hladiny'},
+    {id:'headless_ec',label:'Headless commerce podpora'},
+    {id:'erp',label:'Integrace s ERP systémy'},
+  ]},
+  {id:'ux',label:'👤 Uživatelský zážitek pro editory',feats:[
+    {id:'wysiwyg',label:'WYSIWYG / vizuální editor'},
+    {id:'block_editor',label:'Blokový / drag-and-drop editor'},
+    {id:'workflow',label:'Workflow a schvalování obsahu'},
+    {id:'nontechnical',label:'Přívětivost pro netechnické uživatele'},
+  ]},
+  {id:'sec',label:'🔒 Bezpečnost a enterprise readiness',feats:[
+    {id:'sso',label:'SSO / SAML podpora'},
+    {id:'gdpr',label:'GDPR compliance tooling'},
+    {id:'sla',label:'SLA a enterprise podpora'},
+    {id:'vendor_lock',label:'Vendor Lock-in riziko'},
+  ]},
+  {id:'eco',label:'🧑‍💻 Ekosystém a komunita',feats:[
+    {id:'dev_community',label:'Vývojářská komunita v ČR/SR'},
+    {id:'agency',label:'Dostupnost agentur / partnerů'},
+    {id:'upgrades',label:'Náročnost upgradů'},
+  ]},
+];
+
+const FIT_META=[
+  {k:'small',l:'Malé firmy'},
+  {k:'mid',l:'Střední firmy'},
+  {k:'enterprise',l:'Korporace'},
+  {k:'ecommerce',l:'S e-commerce'},
+  {k:'noecommerce',l:'Bez e-commerce'},
+  {k:'multisite',l:'Multi-site'},
+];
+const TIER_COLORS_MAP = {
+  'open-source':'#30d158','saas-cloud':'#0071e3',
+  'headless':'#af52de','mid-market':'#ff9f0a','enterprise':'#ff3b30'
+};
+const TIER_LABELS_MAP = {
+  'open-source':'Open Source','saas-cloud':'SaaS / Cloud',
+  'headless':'Headless CMS','mid-market':'Mid-Market','enterprise':'Enterprise'
+};
+const CIRC = 2*Math.PI*24; // r=24 => ~150.8
+
+// ═══════════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════════
+const S = {
+  cat: 'all',
+  tier: 'all',
+  tech: 'all',
+  search: '',
+  collapsed: new Set(),
+  hlFeat: null,
+};
+
+// ═══════════════════════════════════════════════════════════════════
+//  FILTER
+// ═══════════════════════════════════════════════════════════════════
+function visiblePlatforms() {
+  return ALL_PLATFORMS.filter(p => {
+    if(S.cat !== 'all' && p.cat !== S.cat) return false;
+    if(S.tier !== 'all' && p.filterTier !== S.tier) return false;
+    if(S.tech !== 'all' && !p.tech.includes(S.tech)) return false;
+    if(S.search) {
+      const q = S.search.toLowerCase();
+      if(!p.name.toLowerCase().includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function isFiltering() {
+  return S.cat!=='all' || S.tier!=='all' || S.tech!=='all' || S.search!=='';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  CELL RENDERER
+// ═══════════════════════════════════════════════════════════════════
+function cv(val) {
+  if(val===1)   return `<span class="cv1" title="Nativní podpora">✓</span>`;
+  if(val===0.5) return `<span class="cv5" title="Částečná / plugin">~</span>`;
+  if(val===0)   return `<span class="cv0" title="Nepodporováno">✗</span>`;
+  return `<span class="cvt">${val}</span>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  RENDER TABLE
+// ═══════════════════════════════════════════════════════════════════
+function renderTable() {
+  const vis = visiblePlatforms();
+  const tbl = document.getElementById('ctbl');
+
+  // ── THEAD ──
+  let thead = `<thead><tr>
+    <th class="th-feat">Parametr / Platforma →</th>`;
+  vis.forEach(p => {
+    thead += `<th class="pth" data-pid="${p.id}">
+      <div class="p-icon" style="background:${p.color}">${p.abbr}</div>
+      <div class="p-name">${p.name}</div>
+      <span class="cat-badge ${p.cat}">${p.cat==='cms'?'CMS/DXP':'Ecommerce'}</span><br>
+      <span class="tier-badge" style="background:${TIER_COLORS_MAP[p.filterTier]}">${TIER_LABELS_MAP[p.filterTier]}</span>
+      <div class="specbar" title="${p.pricingTooltip}">
+        <div class="specdot" style="left:${p.licensePos}%"></div>
+        <div class="spec-tip">${p.pricingTooltip}</div>
+      </div>
+    </th>`;
+  });
+  thead += `</tr></thead>`;
+
+  // ── TBODY ──
+  let tbody = `<tbody>`;
+  FEAT_GROUPS.forEach(grp => {
+    const col = S.collapsed.has(grp.id);
+    tbody += `<tr class="grow${col?' col':''}" data-grp="${grp.id}">
+      <td colspan="${vis.length+1}"><span class="group-label"><i class="chev">▾</i> ${grp.label}</span></td>
+    </tr>`;
+    if(!col) {
+      grp.feats.forEach(feat => {
+        const isHL = S.hlFeat===feat.id;
+        tbody += `<tr class="frow${isHL?' hlrow':''}" data-fid="${feat.id}">
+          <td>${feat.label}</td>`;
+        vis.forEach(p => {
+          tbody += `<td data-pid="${p.id}">${cv(p.f[feat.id])}</td>`;
+        });
+        tbody += `</tr>`;
+      });
+    }
+  });
+  tbody += `</tbody>`;
+
+  tbl.innerHTML = thead+tbody;
+
+  // Apply highlight state
+  if(S.hlFeat) applyHighlight(S.hlFeat, vis);
+
+  // Events
+  tbl.querySelectorAll('.grow').forEach(row => {
+    row.addEventListener('click', () => {
+      const g = row.dataset.grp;
+      S.collapsed.has(g) ? S.collapsed.delete(g) : S.collapsed.add(g);
+      renderTable();
+    });
+  });
+  tbl.querySelectorAll('.frow').forEach(row => {
+    row.addEventListener('click', () => {
+      const fid = row.dataset.fid;
+      if(S.hlFeat===fid){ S.hlFeat=null; clearHL(); }
+      else { S.hlFeat=fid; applyHighlight(fid, vis); }
+      renderTable();
+    });
+  });
+}
+
+function clearHL() {
+  document.querySelectorAll('.pth').forEach(th => th.classList.remove('hl-yes','hl-no'));
+}
+
+function applyHighlight(fid, vis) {
+  clearHL();
+  vis.forEach(p => {
+    const th = document.querySelector(`.pth[data-pid="${p.id}"]`);
+    if(!th) return;
+    const val = p.f[fid];
+    if(val===1){ th.classList.add('hl-yes'); }
+    else { th.classList.add('hl-no'); }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  RENDER FIT DONUTS
+// ═══════════════════════════════════════════════════════════════════
+function renderFit() {
+  const vis = visiblePlatforms();
+  let html = `<div class="fit-sec">
+    <h2 class="sec-title">Vhodnost pro zákazníky</h2>
+    <p class="sec-sub">Procentuální skóre vhodnosti pro typ zákazníka a use-case. Animuje se při scrollu do viditelné oblasti.</p>
+    <div class="fit-scroll">`;
+  vis.forEach(p => {
+    let donuts='';
+    FIT_META.forEach(({k,l}) => {
+      const pct=p.fit[k]||0;
+      const uid=`d-${p.id}-${k}`;
+      donuts+=`<div class="dw">
+        <svg class="dsvg" viewBox="0 0 54 54">
+          <circle class="dbg" cx="27" cy="27" r="24"/>
+          <circle class="dring" id="${uid}" cx="27" cy="27" r="24"/>
+          <text class="dpct" x="27" y="27">${pct}%</text>
+        </svg>
+        <div class="dlbl">${l}</div>
+      </div>`;
+    });
+    html+=`<div class="fit-card" data-fcard="${p.id}">
+      <div class="fc-head">
+        <div class="fc-icon" style="background:${p.color}">${p.abbr}</div>
+        <div>
+          <div class="fc-name">${p.name}</div>
+          <div class="fc-tier" style="color:${TIER_COLORS_MAP[p.filterTier]}">${TIER_LABELS_MAP[p.filterTier]}</div>
+        </div>
+      </div>
+      <div class="donuts">${donuts}</div>
+    </div>`;
+  });
+  html+=`</div></div>`;
+  document.getElementById('fit-area').innerHTML = html;
+
+  // IntersectionObserver for donut animation
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        const pid = e.target.dataset.fcard;
+        const p = ALL_PLATFORMS.find(x=>x.id===pid);
+        if(!p) return;
+        FIT_META.forEach(({k})=>{
+          const pct=p.fit[k]||0;
+          const el=document.getElementById(`d-${pid}-${k}`);
+          if(el) requestAnimationFrame(()=>{ el.style.strokeDashoffset=CIRC*(1-pct/100); });
+        });
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('[data-fcard]').forEach(c=>io.observe(c));
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  COUNTER + RESET
+// ═══════════════════════════════════════════════════════════════════
+function updateUI() {
+  const vis = visiblePlatforms();
+  const total = ALL_PLATFORMS.length;
+  document.getElementById('counter-badge').textContent =
+    `Zobrazeno: ${vis.length} / ${total} platforem`;
+  const rb = document.getElementById('reset-btn');
+  rb.classList.toggle('hidden', !isFiltering());
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  FULL RE-RENDER
+// ═══════════════════════════════════════════════════════════════════
+function render() {
+  updateUI();
+  renderTable();
+  renderFit();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  FILTER PILL LOGIC
+// ═══════════════════════════════════════════════════════════════════
+function initFilters() {
+  document.querySelectorAll('.fpill[data-ftype]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ft = btn.dataset.ftype;
+      const fv = btn.dataset.fval;
+      // deactivate siblings
+      document.querySelectorAll(`.fpill[data-ftype="${ft}"]`).forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      S[ft]=fv;
+      S.hlFeat=null;
+      render();
+    });
+  });
+
+  document.getElementById('fsearch').addEventListener('input', e => {
+    S.search = e.target.value.trim();
+    S.hlFeat=null;
+    render();
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    S.cat='all'; S.tier='all'; S.tech='all'; S.search=''; S.hlFeat=null;
+    // reset pill visuals
+    document.querySelectorAll('.fpill').forEach(b=>{
+      b.classList.toggle('on', b.dataset.fval==='all');
+    });
+    document.getElementById('fsearch').value='';
+    render();
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initFilters();
+  render();
+});
+</script>
+</body>
+</html>
