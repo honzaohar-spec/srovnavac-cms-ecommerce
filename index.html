@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CMS & Ecommerce Platform Comparator</title>
+<title>CMS & E-commerce Platform Comparator</title>
 <style>
 :root {
   --bg: #ffffff;
@@ -281,6 +281,199 @@ button{font-family:inherit;cursor:pointer}
 
 /* No-results */
 .no-results{padding:60px 24px;text-align:center;color:var(--txt2);font-size:15px}
+
+/* ── SHARED TOOLTIP (single floating element on body) ── */
+#shared-tip{
+  position:fixed;z-index:9999;
+  background:#1d1d1f;color:#fff;
+  font-size:13px;line-height:1.55;
+  padding:12px 16px;border-radius:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+  max-width:320px;pointer-events:none;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .16s ease,transform .16s ease;
+  white-space:normal;word-break:break-word;
+}
+#shared-tip.tip-show{opacity:1;transform:translateY(0)}
+#shared-tip::after{
+  content:'';position:absolute;
+  top:-6px;left:18px;
+  border:6px solid transparent;
+  border-bottom-color:#1d1d1f;border-top:none;
+}
+#shared-tip.tip-above::after{
+  top:auto;bottom:-6px;
+  border-bottom-color:transparent;
+  border-top:6px solid #1d1d1f;
+}
+@media(prefers-color-scheme:dark){
+  #shared-tip{background:#f5f5f7;color:#1d1d1f}
+  #shared-tip::after{border-bottom-color:#f5f5f7}
+  #shared-tip.tip-above::after{border-top-color:#f5f5f7;border-bottom-color:transparent}
+}
+
+/* ── WWW BUTTON in platform header ── */
+.www-btn{
+  display:inline-flex;align-items:center;gap:4px;
+  margin-top:5px;padding:3px 9px;
+  border-radius:20px;border:1.5px solid var(--border2);
+  background:transparent;font-size:10px;font-weight:600;
+  color:var(--txt2);text-decoration:none;letter-spacing:.3px;
+  transition:background .2s,color .2s,border-color .2s;
+  white-space:nowrap;cursor:pointer;
+}
+.www-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ── COMPARE BUTTON ── */
+.cmp-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:10px;
+  border:1.5px solid var(--accent);background:transparent;
+  font-size:13px;font-weight:600;color:var(--accent);
+  transition:var(--t);white-space:nowrap;flex-shrink:0;
+}
+.cmp-btn:hover,.cmp-btn.active{background:var(--accent);color:#fff}
+
+/* ── COMPARE PANEL ── */
+#cmp-panel{
+  overflow:hidden;max-height:0;
+  transition:max-height .38s cubic-bezier(.4,0,.2,1);
+  background:var(--bg);border-bottom:1px solid var(--border);
+}
+#cmp-panel.open{max-height:480px}
+.cmp-inner{padding:20px 24px 16px}
+.cmp-row{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.cmp-left{flex:1;min-width:260px}
+.cmp-right{flex:0 0 260px}
+.cmp-search{
+  width:100%;padding:9px 14px;border-radius:10px;
+  border:1.5px solid var(--border);background:var(--bg2);
+  font-size:14px;color:var(--txt);outline:none;transition:border-color .2s;
+  font-family:inherit;
+}
+.cmp-search:focus{border-color:var(--accent);background:var(--bg)}
+.cmp-search::placeholder{color:var(--txt2)}
+.cmp-results{
+  display:flex;flex-wrap:wrap;gap:5px;
+  margin-top:10px;max-height:130px;overflow-y:auto;
+}
+.cmp-chip{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:20px;
+  border:1.5px solid var(--border);background:var(--bg2);
+  font-size:12px;font-weight:500;color:var(--txt);
+  cursor:pointer;transition:var(--t);
+}
+.cmp-chip:hover{border-color:var(--accent)}
+.cmp-chip.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.cmp-chip.maxed{opacity:.35;cursor:not-allowed;pointer-events:none}
+.cmp-cdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+.cmp-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;min-height:28px}
+.cmp-tag{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:20px;
+  background:var(--accent);color:#fff;
+  font-size:12px;font-weight:600;
+}
+.cmp-tag-x{cursor:pointer;opacity:.75;font-size:13px;line-height:1}
+.cmp-tag-x:hover{opacity:1}
+
+.cmp-presets-label{
+  font-size:11px;font-weight:700;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--txt2);margin-bottom:7px;
+}
+.cmp-preset-list{display:flex;flex-direction:column;gap:5px}
+.cmp-preset{
+  padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);
+  background:transparent;font-size:12px;color:var(--txt2);
+  cursor:pointer;transition:var(--t);text-align:left;font-family:inherit;
+}
+.cmp-preset:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,113,227,.05)}
+
+.cmp-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.cmp-go{
+  padding:8px 20px;border-radius:10px;border:none;
+  background:var(--accent);color:#fff;
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:var(--t);font-family:inherit;
+}
+.cmp-go:disabled{opacity:.38;cursor:not-allowed}
+.cmp-go:not(:disabled):hover{background:#0077ed}
+.cmp-cancel{
+  padding:8px 16px;border-radius:10px;
+  border:1.5px solid var(--border2);background:transparent;
+  font-size:13px;color:var(--txt2);cursor:pointer;
+  transition:var(--t);font-family:inherit;
+}
+.cmp-cancel:hover{border-color:var(--red);color:var(--red)}
+.cmp-hint{font-size:12px;color:var(--txt2);margin-left:4px;align-self:center}
+
+/* ── COMPARE BANNER ── */
+#cmp-banner{
+  display:none;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:9px 24px;
+  background:rgba(0,113,227,.07);
+  border-bottom:1px solid rgba(0,113,227,.18);
+  font-size:13px;
+}
+#cmp-banner.active{display:flex}
+.cmp-banner-lbl{color:var(--txt2);font-size:12px}
+.cmp-banner-names{color:var(--accent);font-weight:600}
+.cmp-end{
+  margin-left:auto;padding:4px 12px;border-radius:8px;
+  border:1.5px solid var(--accent);background:transparent;
+  color:var(--accent);font-size:12px;font-weight:600;
+  cursor:pointer;transition:var(--t);font-family:inherit;
+}
+.cmp-end:hover{background:var(--red);border-color:var(--red);color:#fff}
+
+/* ── LOGOS ── */
+.p-icon-logo{
+  background:var(--bg2)!important;
+  border:1.5px solid var(--border);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.p-logo{
+  max-height:28px;max-width:72px;
+  object-fit:contain;
+  filter:grayscale(1) opacity(.55);
+  transition:filter .3s ease;
+}
+.pth:hover .p-logo,.pth.hl-yes .p-logo{filter:grayscale(0) opacity(1)}
+
+/* ── LEGEND ── */
+.legend{
+  display:flex;align-items:center;gap:20px;
+  padding:12px 24px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  font-size:12px;color:var(--txt2);
+  flex-wrap:wrap;
+}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:12px}
+.leg-dot{
+  width:22px;height:22px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+}
+.leg-dot.yes{background:rgba(48,209,88,.12)}
+.leg-dot.partial{background:rgba(255,159,10,.12)}
+.leg-dot.no{background:rgba(255,59,48,.08)}
+.leg-dot.text{background:var(--bg3);font-size:10px;font-weight:700;color:var(--txt2)}
+
+/* ── INFO ICON & TOOLTIP ── */
+.feat-wrap{display:flex;align-items:center;gap:6px;position:relative}
+.iico{
+  flex-shrink:0;width:15px;height:15px;
+  border-radius:50%;border:1.5px solid var(--txt2);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;font-style:normal;
+  color:var(--txt2);cursor:pointer;
+  transition:border-color .2s,color .2s;
+  line-height:1;user-select:none;
+}
+.iico:hover{border-color:var(--accent);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -290,6 +483,10 @@ button{font-family:inherit;cursor:pointer}
   <div class="logo">Platform <span>Comparator</span></div>
   <div class="hdr-right">
     <span class="counter-badge" id="counter-badge">Zobrazeno: — platforem</span>
+    <button class="cmp-btn" id="cmp-btn" title="Porovnat vybrané platformy vedle sebe">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="2" x2="2" y2="12"/><line x1="6" y1="2" x2="6" y2="12"/><line x1="10" y1="2" x2="10" y2="12"/></svg>
+      Porovnat
+    </button>
     <button class="reset-btn hidden" id="reset-btn">✕ Resetovat filtry</button>
   </div>
 </header>
@@ -301,7 +498,7 @@ button{font-family:inherit;cursor:pointer}
     <span class="filter-label">Kategorie</span>
     <button class="fpill on" data-ftype="cat" data-fval="all">Všechny</button>
     <button class="fpill" data-ftype="cat" data-fval="cms">CMS / DXP</button>
-    <button class="fpill" data-ftype="cat" data-fval="ec">Ecommerce</button>
+    <button class="fpill" data-ftype="cat" data-fval="ec">E-commerce</button>
   </div>
 
   <div class="fsep"></div>
@@ -333,8 +530,50 @@ button{font-family:inherit;cursor:pointer}
 
 </div>
 
+<!-- COMPARE PANEL (slides down below filter bar) -->
+<div id="cmp-panel">
+  <div class="cmp-inner">
+    <div class="cmp-row">
+      <div class="cmp-left">
+        <input class="cmp-search" id="cmp-search" type="search" placeholder="🔍 Hledat platformu… (např. Kentico, Sitecore)" autocomplete="off">
+        <div class="cmp-results" id="cmp-results"></div>
+        <div class="cmp-tags" id="cmp-tags"></div>
+        <div class="cmp-actions">
+          <button class="cmp-go" id="cmp-go" disabled>Zobrazit srovnání</button>
+          <button class="cmp-cancel" id="cmp-cancel">Zrušit</button>
+          <span class="cmp-hint" id="cmp-hint">Vyberte 2–5 platforem</span>
+        </div>
+      </div>
+      <div class="cmp-right">
+        <div class="cmp-presets-label">Rychlá srovnání</div>
+        <div class="cmp-preset-list">
+          <button class="cmp-preset" data-preset="kentico,umbraco,orchard">Kentico vs. Umbraco vs. Orchard Core</button>
+          <button class="cmp-preset" data-preset="shopify,woocommerce,shoptet">Shopify vs. WooCommerce vs. Shoptet</button>
+          <button class="cmp-preset" data-preset="sitecore,aem,optimizely">Sitecore vs. AEM vs. Optimizely</button>
+          <button class="cmp-preset" data-preset="contentful,kontentai,storyblok">Contentful vs. Kontent.ai vs. Storyblok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARE BANNER (shown when comparison active) -->
+<div id="cmp-banner">
+  <span class="cmp-banner-lbl">Porovnáváte:</span>
+  <span class="cmp-banner-names" id="cmp-banner-names"></span>
+  <button class="cmp-end" id="cmp-end">✕ Ukončit srovnání</button>
+</div>
+
 <!-- MAIN -->
 <div class="main">
+  <!-- LEGEND -->
+  <div class="legend">
+    <strong style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--txt2);margin-right:4px">Legenda:</strong>
+    <span class="leg-item"><span class="leg-dot yes"><span class="cv1">✓</span></span> Nativní podpora</span>
+    <span class="leg-item"><span class="leg-dot partial"><span class="cv5">~</span></span> Částečná / přes plugin</span>
+    <span class="leg-item"><span class="leg-dot no"><span class="cv0">✗</span></span> Nepodporováno</span>
+    <span class="leg-item"><span class="leg-dot text">Abc</span> Textová hodnota</span>
+  </div>
   <div class="tbl-wrap">
     <table class="ctbl" id="ctbl"></table>
   </div>
@@ -348,6 +587,39 @@ button{font-family:inherit;cursor:pointer}
 
 // filterTier values: open-source | saas-cloud | headless | mid-market | enterprise
 // tech array: dotnet | php | js | java | proprietary
+
+// Platform logo URLs (simpleicons CDN where available)
+const LOGO_URLS = {
+  wordpress:     'https://cdn.simpleicons.org/wordpress/21759b',
+  drupal:        'https://cdn.simpleicons.org/drupal/0678BE',
+  strapi:        'https://cdn.simpleicons.org/strapi/4945FF',
+  storyblok:     'https://cdn.simpleicons.org/storyblok/09B3AF',
+  contentful:    'https://cdn.simpleicons.org/contentful/2478CC',
+  sanity:        'https://cdn.simpleicons.org/sanity/F03E2F',
+  shopify:       'https://cdn.simpleicons.org/shopify/96BF48',
+  shopify_plus:  'https://cdn.simpleicons.org/shopify/5C6AC4',
+  woocommerce:   'https://cdn.simpleicons.org/woocommerce/96588A',
+  prestashop:    'https://cdn.simpleicons.org/prestashop/DF0067',
+  adobe_commerce:'https://cdn.simpleicons.org/magento/EE3523',
+  aem:           'https://cdn.simpleicons.org/adobe/FA0F00',
+  shopware:      'https://cdn.simpleicons.org/shopware/189EFF',
+  sap:           'https://cdn.simpleicons.org/sap/0074CB',
+  sfcc:          'https://cdn.simpleicons.org/salesforce/00A1E0',
+  commercetools: 'https://cdn.simpleicons.org/commercetools/1A9CD8',
+  opencart:      'https://cdn.simpleicons.org/opencart/57A9E2',
+  liferay:       'https://cdn.simpleicons.org/liferay/004b82',
+  umbraco:       'https://cdn.simpleicons.org/umbraco/3544B1',
+  umbraco_cloud: 'https://cdn.simpleicons.org/umbraco/3544B1',
+};
+
+// Helper: build platform icon HTML (logo or fallback abbr)
+function iconHtml(p, size=44, radius=12) {
+  const url = LOGO_URLS[p.id];
+  if(!url) return `<div class="p-icon" style="width:${size}px;height:${size}px;border-radius:${radius}px;background:${p.color};display:flex;align-items:center;justify-content:center;font-size:${Math.round(size*0.32)}px;font-weight:800;color:#fff;margin:0 auto 6px">${p.abbr}</div>`;
+  return `<div class="p-icon p-icon-logo" data-abbr="${p.abbr}" data-color="${p.color}" style="width:${size}px;height:${size}px;border-radius:${radius}px;margin:0 auto 6px">
+    <img src="${url}" class="p-logo" alt="${p.name}">
+  </div>`;
+}
 
 const ALL_PLATFORMS = [
   // ─── Priority block (shown first) ───────────────────────────
@@ -833,51 +1105,199 @@ const ALL_PLATFORMS = [
     },
     fit:{small:2,mid:20,enterprise:95,ecommerce:100,noecommerce:2,multisite:85}
   },
+  // ─── ADDITIONAL CMS/DXP PLATFORMS ─────────────────────────────────────────────
+  {
+    id:'bloomreach', name:'Bloomreach', cat:'cms', tier:4, filterTier:'mid-market',
+    color:'#fb5100', abbr:'BR', tech:['java'],
+    licensePos:70, pricingTooltip:'Enterprise DXP + personalizace. Od ~$40K/rok. Český původ (HBS/Hippo).',
+    f:{
+      license_model:'SaaS', cost_level:'€€€', hosting:'Vendor cloud', migration:'Střední',
+      stack:'Java / JS', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:1, personalize:1, email_mktg:0.5, analytics:1,
+      native_ec:0.5, b2b:0.5, headless_ec:1, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:5,mid:45,enterprise:80,ecommerce:55,noecommerce:70,multisite:80}
+  },
+  {
+    id:'sitefinity', name:'Sitefinity', cat:'cms', tier:4, filterTier:'mid-market',
+    color:'#ff6600', abbr:'SFN', tech:['dotnet'],
+    licensePos:58, pricingTooltip:'Progress Sitefinity (.NET CMS). Od ~€15K/rok. Mid-market a enterprise.',
+    f:{
+      license_model:'Subscription', cost_level:'€€€', hosting:'Cloud / vlastní', migration:'Střední',
+      stack:'.NET / C#', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:1, ab_test:1, personalize:1, email_mktg:0.5, analytics:1,
+      native_ec:0.5, b2b:0.5, headless_ec:0.5, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Medium',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'Medium',
+    },
+    fit:{small:15,mid:65,enterprise:70,ecommerce:35,noecommerce:80,multisite:75}
+  },
+  {
+    id:'magnolia', name:'Magnolia CMS', cat:'cms', tier:5, filterTier:'enterprise',
+    color:'#3d4f5c', abbr:'MG', tech:['java'],
+    licensePos:78, pricingTooltip:'Enterprise Java CMS. Od ~$60K/rok. Composable DXP architektura.',
+    f:{
+      license_model:'SaaS / On-Premise', cost_level:'€€€€', hosting:'Cloud / vlastní', migration:'Vysoké',
+      stack:'Java', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:1, email_mktg:0, analytics:0.5,
+      native_ec:0, b2b:0, headless_ec:1, erp:0.5,
+      wysiwyg:1, block_editor:1, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:3,mid:20,enterprise:80,ecommerce:25,noecommerce:75,multisite:85}
+  },
+  // ─── ADDITIONAL ECOMMERCE PLATFORMS ───────────────────────────
+  {
+    id:'spryker', name:'Spryker', cat:'ec', tier:4, filterTier:'enterprise',
+    color:'#1ab966', abbr:'SPR', tech:['php'],
+    licensePos:82, pricingTooltip:'MACH e-commerce enterprise. Od ~$100K/rok. B2B & B2C composable.',
+    f:{
+      license_model:'SaaS / License', cost_level:'€€€€', hosting:'Cloud / vlastní', migration:'Vysoké',
+      stack:'PHP (Symfony)', headless:1, mach:1, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0, analytics:0.5,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:0.5, block_editor:0.5, workflow:0.5, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:2,mid:15,enterprise:85,ecommerce:100,noecommerce:2,multisite:80}
+  },
+  {
+    id:'intershop', name:'Intershop', cat:'ec', tier:4, filterTier:'enterprise',
+    color:'#e30613', abbr:'IS', tech:['java'],
+    licensePos:85, pricingTooltip:'Enterprise Java e-commerce. Od ~$100K/rok. Silný v B2B a výrobním sektoru.',
+    f:{
+      license_model:'License / SaaS', cost_level:'€€€€', hosting:'Cloud / vlastní', migration:'Vysoké',
+      stack:'Java', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0, analytics:0.5,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:0.5, block_editor:0.5, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'High',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:2,mid:15,enterprise:80,ecommerce:100,noecommerce:2,multisite:75}
+  },
+  {
+    id:'orocommerce', name:'OroCommerce', cat:'ec', tier:4, filterTier:'enterprise',
+    color:'#f1642c', abbr:'ORO', tech:['php'],
+    licensePos:75, pricingTooltip:'B2B e-commerce OS/Enterprise (PHP/Symfony). Od ~$45K/rok.',
+    f:{
+      license_model:'OS / Enterprise', cost_level:'€0 / €€€€', hosting:'Cloud / vlastní', migration:'Vysoké',
+      stack:'PHP (Symfony)', headless:1, mach:0.5, multisite:1, i18n:1,
+      mktg_auto:0.5, ab_test:0.5, personalize:0.5, email_mktg:0.5, analytics:0.5,
+      native_ec:1, b2b:1, headless_ec:1, erp:1,
+      wysiwyg:1, block_editor:0.5, workflow:1, nontechnical:'Low',
+      sso:1, gdpr:1, sla:1, vendor_lock:'Medium',
+      dev_community:'Low', agency:'Low', upgrades:'High',
+    },
+    fit:{small:3,mid:20,enterprise:85,ecommerce:100,noecommerce:2,multisite:70}
+  },
 ];
+
+// Fill in new feature fields for existing platforms that don't have them
+function setupDefaults() {
+  ALL_PLATFORMS.forEach(p => {
+    const f = p.f;
+    // perf: cloud-hosted or headless-first platforms generally score better
+    if(f.perf === undefined) {
+      f.perf = (p.filterTier==='enterprise' || p.filterTier==='headless') ? 1 :
+               (p.filterTier==='saas-cloud' || p.filterTier==='mid-market') ? 1 : 0.5;
+    }
+    // multichannel: mirrors headless capability
+    if(f.multichannel === undefined) {
+      f.multichannel = f.headless;
+    }
+    // integration_eco: enterprise + mid-market have richer ecosystems
+    if(f.integration_eco === undefined) {
+      f.integration_eco = (p.filterTier==='enterprise') ? 1 :
+                          (p.filterTier==='mid-market') ? 0.5 : 0.5;
+    }
+  });
+}
 
 const FEAT_GROUPS = [
   {id:'cost',label:'💰 Licenční a nákladová struktura',feats:[
-    {id:'license_model',label:'Licenční model'},
-    {id:'cost_level',label:'Přibližná roční cena licence'},
-    {id:'hosting',label:'Hostingová flexibilita'},
-    {id:'migration',label:'Náklady na migraci'},
+    {id:'license_model', label:'Licenční model',
+     tip:'Typ licence určuje způsob platby a podmínky použití. Open Source = zdarma, ale potřebujete vlastní vývoj. SaaS = platíte měsíčně, vše spravováno za vás.'},
+    {id:'cost_level',    label:'Přibližná roční cena licence',
+     tip:'Orientační roční náklady na licenci (bez hostingu a implementace). €0 = základní verze zdarma, €€€€ = statisíce Kč ročně.'},
+    {id:'hosting',       label:'Hostingová flexibilita',
+     tip:'Kde poběží váš web? Vlastní server = plná kontrola, ale staráte se sami. Vendor cloud = platforma se stará o infrastrukturu.'},
+    {id:'migration',     label:'Náklady na migraci',
+     tip:'Jak nákladné a složité je přejít z jiné platformy nebo upgradovat. Nízké = dny/týdny, Vysoké = měsíce a velký rozpočet.'},
   ]},
   {id:'tech',label:'🛠 Technologie a architektura',feats:[
-    {id:'stack',label:'Technologický stack'},
-    {id:'headless',label:'Headless / API-first podpora'},
-    {id:'mach',label:'Kompozitní architektura (MACH)'},
-    {id:'multisite',label:'Multi-site management'},
-    {id:'i18n',label:'Vícejazyčný obsah (i18n / L10n)'},
+    {id:'stack',         label:'Technologický stack',
+     tip:'Programovací jazyk a framework, ve kterém je platforma postavena. Určuje, jaké vývojáře potřebujete a jaká je budoucí rozšiřitelnost.'},
+    {id:'headless',      label:'Headless / API-first podpora',
+     tip:'Možnost oddělit backend (správa obsahu) od frontendu. Umožňuje libovolný frontendový framework, mobilní app nebo omnichannel distribuci.'},
+    {id:'mach',          label:'Kompozitní architektura (MACH)',
+     tip:'MACH = Microservices, API-first, Cloud-native, Headless. Moderní přístup pro maximální flexibilitu – snadno vyměníte jednotlivé komponenty.'},
+    {id:'perf',          label:'Výkon backendu a cachování',
+     tip:'Rychlost vykreslování (Core Web Vitals) závisí primárně na kvalitě frontendového kódu. Tato metrika hodnotí, jak dobře platforma zvládá backend výkon: rychlost databázových dotazů, nativní cachování a CDN integraci.'},
+    {id:'multisite',     label:'Multi-site management',
+     tip:'Správa více webů (různé značky, jazyky, trhy) z jedné administrace. Klíčové pro holdingy, franchise nebo mezinárodní firmy.'},
+    {id:'i18n',          label:'Vícejazyčný obsah (i18n / L10n)',
+     tip:'Nativní podpora pro vícejazyčné weby včetně lokalizace formátů (datum, měna, směr čtení). Bez nutnosti složitých pluginů.'},
+    {id:'multichannel',  label:'Vícekanálová kapacita',
+     tip:'Schopnost distribuovat strukturovaný obsah do více kanálů (web, mobilní app, IoT, kiosky, digitální signage) z jednoho místa bez duplicitního zadávání.'},
   ]},
   {id:'mktg',label:'📣 Marketing a DX funkce',feats:[
-    {id:'mktg_auto',label:'Nativní marketingová automatizace'},
-    {id:'ab_test',label:'A/B testování (nativní)'},
-    {id:'personalize',label:'Personalizace obsahu'},
-    {id:'email_mktg',label:'E-mail marketing (nativní)'},
-    {id:'analytics',label:'Analytika a reporting (nativní)'},
+    {id:'mktg_auto',     label:'Nativní marketingová automatizace',
+     tip:'Automatické spouštění kampaní na základě chování uživatelů – e-maily, notifikace, lead nurturing – přímo v platformě bez externího nástroje.'},
+    {id:'ab_test',       label:'A/B testování (nativní)',
+     tip:'Testování dvou variant stránky nebo obsahu na různých skupinách návštěvníků pro optimalizaci konverzí. Vše přímo v platformě.'},
+    {id:'personalize',   label:'Personalizace obsahu',
+     tip:'Zobrazení různého obsahu různým segmentům návštěvníků (podle lokace, chování, profilu) přímo v CMS nebo e-shopu bez kódu.'},
+    {id:'email_mktg',    label:'E-mail marketing (nativní)',
+     tip:'Odesílání marketingových e-mailů a newsletterů přímo z platformy bez integrace externího nástroje (Mailchimp, Klaviyo apod.).'},
+    {id:'analytics',     label:'Analytika a reporting (nativní)',
+     tip:'Vestavěné přehledy o návštěvnosti, konverzích a chování uživatelů bez nutnosti napojení na Google Analytics nebo jiný nástroj.'},
   ]},
   {id:'ec',label:'🛒 E-commerce',feats:[
-    {id:'native_ec',label:'Nativní e-commerce modul'},
-    {id:'b2b',label:'B2B prodej / cenové hladiny'},
-    {id:'headless_ec',label:'Headless commerce podpora'},
-    {id:'erp',label:'Integrace s ERP systémy'},
+    {id:'native_ec',     label:'Nativní e-commerce modul',
+     tip:'Platforma má zabudovaný kompletní e-shop – košík, platby, produktový katalog, správu objednávek – bez potřeby externího pluginu.'},
+    {id:'b2b',           label:'B2B prodej / cenové hladiny',
+     tip:'Podpora B2B scénářů: individuální ceny pro různé zákazníky nebo skupiny, schválení objednávek, firemní účty, offline objednávky.'},
+    {id:'headless_ec',   label:'Headless commerce podpora',
+     tip:'E-commerce logika dostupná přes API pro libovolný frontend – mobilní aplikaci, IoT zařízení nebo vlastní React/Next.js aplikaci.'},
+    {id:'erp',           label:'Integrace s ERP systémy',
+     tip:'Napojení na podnikové systémy jako SAP, Microsoft Dynamics, Oracle pro synchronizaci objednávek, skladových zásob a zákazníků.'},
+    {id:'integration_eco', label:'Ekosystém integrací (ERP / CRM / PIM)',
+     tip:'Dostupnost hotových konektorů a marketplace rozšíření pro klíčové podnikové systémy ERP, CRM a PIM. Čím více nativních integrací, tím nižší náklady na vývoj.'},
   ]},
   {id:'ux',label:'👤 Uživatelský zážitek pro editory',feats:[
-    {id:'wysiwyg',label:'WYSIWYG / vizuální editor'},
-    {id:'block_editor',label:'Blokový / drag-and-drop editor'},
-    {id:'workflow',label:'Workflow a schvalování obsahu'},
-    {id:'nontechnical',label:'Přívětivost pro netechnické uživatele'},
+    {id:'wysiwyg',       label:'WYSIWYG / vizuální editor',
+     tip:'Editor, kde vidíte výsledek přímo při psaní. Ideální pro marketéry a obsahové týmy. „Co vidíte, to dostanete."'},
+    {id:'block_editor',  label:'Blokový / drag-and-drop editor',
+     tip:'Skládání stránek z hotových bloků nebo komponent přetažením myši. Nevyžaduje znalost kódu – stránku vytvoří i netechnický uživatel.'},
+    {id:'workflow',      label:'Workflow a schvalování obsahu',
+     tip:'Definovatelné procesy: koncept → revize → schválení → publikace. Klíčové pro větší redakční týmy a regulované obory.'},
+    {id:'nontechnical',  label:'Přívětivost pro netechnické uživatele',
+     tip:'Jak snadno dokáže marketér nebo obchodní manažer pracovat s platformou bez pomoci vývojáře. High = výborně, Low = vyžaduje IT asistenci.'},
   ]},
   {id:'sec',label:'🔒 Bezpečnost a enterprise readiness',feats:[
-    {id:'sso',label:'SSO / SAML podpora'},
-    {id:'gdpr',label:'GDPR compliance tooling'},
-    {id:'sla',label:'SLA a enterprise podpora'},
-    {id:'vendor_lock',label:'Vendor Lock-in riziko'},
+    {id:'sso',           label:'SSO / SAML podpora',
+     tip:'Přihlášení přes firemní identitu (Active Directory, Azure AD, Okta). Nezbytné pro enterprise bezpečnostní politiky a správu přístupu.'},
+    {id:'gdpr',          label:'GDPR compliance tooling',
+     tip:'Nástroje pro správu souhlasů, anonymizaci dat, export a mazání osobních údajů v souladu s evropskou legislativou GDPR.'},
+    {id:'sla',           label:'SLA a enterprise podpora',
+     tip:'Garantovaná dostupnost (uptime) a prioritní podpora s definovanou dobou odezvy. Kritické pro business-critical weby a aplikace.'},
+    {id:'vendor_lock',   label:'Vendor Lock-in riziko',
+     tip:'Riziko závislosti na konkrétním dodavateli. High = těžká migrace, proprietární formáty. Low = otevřené standardy, snadný odchod.'},
   ]},
   {id:'eco',label:'🧑‍💻 Ekosystém a komunita',feats:[
-    {id:'dev_community',label:'Vývojářská komunita v ČR/SR'},
-    {id:'agency',label:'Dostupnost agentur / partnerů'},
-    {id:'upgrades',label:'Náročnost upgradů'},
+    {id:'dev_community', label:'Vývojářská komunita v ČR/SR',
+     tip:'Počet vývojářů, agentur a odborníků dostupných v České a Slovenské republice pro implementaci, rozvoj a dlouhodobou podporu.'},
+    {id:'agency',        label:'Dostupnost agentur / partnerů',
+     tip:'Dostupnost certifikovaných agentur a partnerů v regionu CZ/SK pro implementaci, rozvoj a long-term support projektu.'},
+    {id:'upgrades',      label:'Náročnost upgradů',
+     tip:'Jak náročné jsou upgrady na nové verze. Low = automatické nebo bezproblémové. High = breaking changes, složité migrace, vysoké náklady.'},
   ]},
 ];
 
@@ -915,6 +1335,10 @@ const S = {
 //  FILTER
 // ═══════════════════════════════════════════════════════════════════
 function visiblePlatforms() {
+  // Compare mode: show only selected platforms (in chosen order)
+  if(S.compareMode && S.compareIds.length) {
+    return S.compareIds.map(id => ALL_PLATFORMS.find(p=>p.id===id)).filter(Boolean);
+  }
   return ALL_PLATFORMS.filter(p => {
     if(S.cat !== 'all' && p.cat !== S.cat) return false;
     if(S.tier !== 'all' && p.filterTier !== S.tier) return false;
@@ -928,7 +1352,7 @@ function visiblePlatforms() {
 }
 
 function isFiltering() {
-  return S.cat!=='all' || S.tier!=='all' || S.tech!=='all' || S.search!=='';
+  return S.compareMode || S.cat!=='all' || S.tier!=='all' || S.tech!=='all' || S.search!=='';
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -952,11 +1376,15 @@ function renderTable() {
   let thead = `<thead><tr>
     <th class="th-feat">Parametr / Platforma →</th>`;
   vis.forEach(p => {
+    const url = PLATFORM_URLS[p.id] || '#';
     thead += `<th class="pth" data-pid="${p.id}">
-      <div class="p-icon" style="background:${p.color}">${p.abbr}</div>
+      ${iconHtml(p)}
       <div class="p-name">${p.name}</div>
-      <span class="cat-badge ${p.cat}">${p.cat==='cms'?'CMS/DXP':'Ecommerce'}</span><br>
+      <span class="cat-badge ${p.cat}">${p.cat==='cms'?'CMS/DXP':'E-commerce'}</span><br>
       <span class="tier-badge" style="background:${TIER_COLORS_MAP[p.filterTier]}">${TIER_LABELS_MAP[p.filterTier]}</span>
+      <a class="www-btn" href="${url}" target="_blank" rel="noopener" title="${url}">
+        Oficiální web ↗
+      </a>
       <div class="specbar" title="${p.pricingTooltip}">
         <div class="specdot" style="left:${p.licensePos}%"></div>
         <div class="spec-tip">${p.pricingTooltip}</div>
@@ -976,7 +1404,7 @@ function renderTable() {
       grp.feats.forEach(feat => {
         const isHL = S.hlFeat===feat.id;
         tbody += `<tr class="frow${isHL?' hlrow':''}" data-fid="${feat.id}">
-          <td>${feat.label}</td>`;
+          <td><div class="feat-wrap">${feat.label}${feat.tip ? `<i class="iico" data-tip="${feat.tip.replace(/"/g,'&quot;')}" tabindex="0" aria-label="Info: ${feat.label}">i</i>` : ''}</div></td>`;
         vis.forEach(p => {
           tbody += `<td data-pid="${p.id}">${cv(p.f[feat.id])}</td>`;
         });
@@ -987,6 +1415,7 @@ function renderTable() {
   tbody += `</tbody>`;
 
   tbl.innerHTML = thead+tbody;
+  attachLogos();
 
   // Apply highlight state
   if(S.hlFeat) applyHighlight(S.hlFeat, vis);
@@ -1023,6 +1452,22 @@ function applyHighlight(fid, vis) {
     else { th.classList.add('hl-no'); }
   });
 }
+
+function attachLogos() {
+  document.querySelectorAll('.p-logo').forEach(img => {
+    img.onerror = function() {
+      const d = this.parentElement;
+      d.innerHTML = d.dataset.abbr || '';
+      d.style.background = d.dataset.color || '#999';
+      d.style.color = '#fff';
+      d.style.fontSize = '13px';
+      d.style.fontWeight = '800';
+      d.classList.remove('p-icon-logo');
+    };
+  });
+}
+
+// attachTooltips() removed — replaced by initSharedTooltip() (event-delegated, called once)
 
 // ═══════════════════════════════════════════════════════════════════
 //  RENDER FIT DONUTS
@@ -1086,10 +1531,16 @@ function renderFit() {
 function updateUI() {
   const vis = visiblePlatforms();
   const total = ALL_PLATFORMS.length;
-  document.getElementById('counter-badge').textContent =
-    `Zobrazeno: ${vis.length} / ${total} platforem`;
+  if(S.compareMode) {
+    document.getElementById('counter-badge').textContent =
+      `Srovnání: ${vis.length} platforem`;
+  } else {
+    document.getElementById('counter-badge').textContent =
+      `Zobrazeno: ${vis.length} / ${total} platforem`;
+  }
   const rb = document.getElementById('reset-btn');
-  rb.classList.toggle('hidden', !isFiltering());
+  // Show reset only when filter active (not in compare mode — banner handles that)
+  rb.classList.toggle('hidden', !isFiltering() || S.compareMode);
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1139,9 +1590,310 @@ function initFilters() {
 //  INIT
 // ═══════════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  setupDefaults();
   initFilters();
+  initCompare();
+  initSharedTooltip();
   render();
+  updateCompareBanner();
 });
+// ═══════════════════════════════════════════════════════════════════
+//  OFFICIAL WEBSITE URLs
+// ═══════════════════════════════════════════════════════════════════
+const PLATFORM_URLS = {
+  umbraco:       'https://umbraco.com',
+  kontentai:     'https://kontent.ai',
+  orchard:       'https://orchardcore.net',
+  sulu:          'https://sulu.io',
+  sylius:        'https://sylius.com',
+  aem:           'https://business.adobe.com/products/experience-manager/adobe-experience-manager.html',
+  sitecore:      'https://www.sitecore.com',
+  wordpress:     'https://wordpress.org',
+  drupal:        'https://drupal.org',
+  strapi:        'https://strapi.io',
+  umbraco_cloud: 'https://umbraco.com/cloud',
+  storyblok:     'https://www.storyblok.com',
+  acquia:        'https://www.acquia.com',
+  sanity:        'https://www.sanity.io',
+  contentful:    'https://www.contentful.com',
+  kentico:       'https://www.kentico.com',
+  liferay:       'https://www.liferay.com',
+  optimizely:    'https://www.optimizely.com',
+  bloomreach:    'https://www.bloomreach.com',
+  sitefinity:    'https://www.progress.com/sitefinity-cms',
+  magnolia:      'https://www.magnolia-cms.com',
+  woocommerce:   'https://woocommerce.com',
+  prestashop:    'https://www.prestashop.com',
+  smartstore:    'https://www.smartstore.com',
+  opencart:      'https://www.opencart.com',
+  shoptet:       'https://www.shoptet.cz',
+  wix:           'https://www.wix.com/ecommerce',
+  shopify:       'https://www.shopify.com',
+  bigcommerce:   'https://www.bigcommerce.com',
+  shopify_plus:  'https://www.shopify.com/plus',
+  commercetools: 'https://commercetools.com',
+  adobe_commerce:'https://business.adobe.com/products/magento/magento-commerce.html',
+  shopware:      'https://www.shopware.com',
+  sfcc:          'https://www.salesforce.com/products/commerce',
+  sap:           'https://www.sap.com/products/crm/commerce-cloud.html',
+  spryker:       'https://spryker.com',
+  intershop:     'https://www.intershop.com',
+  orocommerce:   'https://oroinc.com/b2b-ecommerce',
+};
+
+// ═══════════════════════════════════════════════════════════════════
+//  COMPARE STATE & LOGIC
+// ═══════════════════════════════════════════════════════════════════
+S.compareMode   = false;
+S.compareIds    = [];   // active comparison IDs
+S.cmpPending    = [];   // IDs selected in the panel (not yet confirmed)
+S.cmpQuery      = '';   // search query in compare panel
+
+// Extend visiblePlatforms to honour compare mode
+const _origVisible = visiblePlatforms;
+// (override defined after init — see bottom)
+
+function isFiltering2() {
+  return S.compareMode || isFiltering();
+}
+
+// ── Compare panel helpers ────────────────────────────────────────
+function openCmpPanel() {
+  S.cmpPending = [...S.compareIds];
+  S.cmpQuery = '';
+  document.getElementById('cmp-search').value = '';
+  document.getElementById('cmp-panel').classList.add('open');
+  document.getElementById('cmp-btn').classList.add('active');
+  renderCmpResults();
+  renderCmpTags();
+  document.getElementById('cmp-search').focus();
+}
+
+function closeCmpPanel() {
+  document.getElementById('cmp-panel').classList.remove('open');
+  document.getElementById('cmp-btn').classList.remove('active');
+}
+
+function renderCmpResults() {
+  const q = S.cmpQuery.toLowerCase();
+  const list = q
+    ? ALL_PLATFORMS.filter(p => p.name.toLowerCase().includes(q))
+    : ALL_PLATFORMS;
+
+  const container = document.getElementById('cmp-results');
+  const maxed = S.cmpPending.length >= 5;
+  container.innerHTML = list.map(p => {
+    const sel = S.cmpPending.includes(p.id);
+    const cls = sel ? 'sel' : (maxed && !sel ? 'maxed' : '');
+    return `<button class="cmp-chip ${cls}" data-cpid="${p.id}">
+      <span class="cmp-cdot" style="background:${p.color}"></span>
+      ${p.name}
+      <span style="font-size:9px;opacity:.6;font-weight:400">${p.cat==='cms'?'CMS':'EC'}</span>
+    </button>`;
+  }).join('');
+
+  container.querySelectorAll('.cmp-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const id = chip.dataset.cpid;
+      if(S.cmpPending.includes(id)) {
+        S.cmpPending = S.cmpPending.filter(x=>x!==id);
+      } else if(S.cmpPending.length < 5) {
+        S.cmpPending.push(id);
+      }
+      renderCmpResults();
+      renderCmpTags();
+    });
+  });
+}
+
+function renderCmpTags() {
+  const container = document.getElementById('cmp-tags');
+  container.innerHTML = S.cmpPending.map(id => {
+    const p = ALL_PLATFORMS.find(x=>x.id===id);
+    if(!p) return '';
+    return `<span class="cmp-tag">
+      <span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);display:inline-block"></span>
+      ${p.name}
+      <span class="cmp-tag-x" data-tagid="${p.id}">×</span>
+    </span>`;
+  }).join('');
+
+  container.querySelectorAll('.cmp-tag-x').forEach(x => {
+    x.addEventListener('click', () => {
+      S.cmpPending = S.cmpPending.filter(id=>id!==x.dataset.tagid);
+      renderCmpResults();
+      renderCmpTags();
+    });
+  });
+
+  const n = S.cmpPending.length;
+  const go = document.getElementById('cmp-go');
+  const hint = document.getElementById('cmp-hint');
+  go.disabled = n < 2;
+  hint.textContent = n===0 ? 'Vyberte 2–5 platforem' :
+                     n===1 ? 'Vyberte alespoň jednu další' :
+                     `${n} platforem vybráno`;
+}
+
+function activateCompare(ids) {
+  S.compareIds   = [...ids];
+  S.compareMode  = true;
+  closeCmpPanel();
+  updateHash();
+  render();
+  updateCompareBanner();
+}
+
+function endCompare() {
+  S.compareIds  = [];
+  S.compareMode = false;
+  updateHash();
+  render();
+  updateCompareBanner();
+}
+
+function updateCompareBanner() {
+  const banner = document.getElementById('cmp-banner');
+  if(S.compareMode && S.compareIds.length) {
+    const names = S.compareIds
+      .map(id => ALL_PLATFORMS.find(p=>p.id===id)?.name || id)
+      .join(' · ');
+    document.getElementById('cmp-banner-names').textContent = names;
+    banner.classList.add('active');
+  } else {
+    banner.classList.remove('active');
+  }
+}
+
+function updateHash() {
+  if(S.compareMode && S.compareIds.length) {
+    history.replaceState(null,'','#compare='+S.compareIds.join(','));
+  } else {
+    history.replaceState(null,'',location.pathname+location.search);
+  }
+}
+
+function initCompare() {
+  document.getElementById('cmp-btn').addEventListener('click', () => {
+    document.getElementById('cmp-panel').classList.contains('open')
+      ? closeCmpPanel()
+      : openCmpPanel();
+  });
+
+  document.getElementById('cmp-cancel').addEventListener('click', closeCmpPanel);
+
+  document.getElementById('cmp-go').addEventListener('click', () => {
+    if(S.cmpPending.length >= 2) activateCompare(S.cmpPending);
+  });
+
+  document.getElementById('cmp-end').addEventListener('click', endCompare);
+
+  document.getElementById('cmp-search').addEventListener('input', e => {
+    S.cmpQuery = e.target.value.trim();
+    renderCmpResults();
+  });
+
+  document.querySelectorAll('.cmp-preset').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const ids = btn.dataset.preset.split(',');
+      activateCompare(ids);
+    });
+  });
+
+  // Read hash on load
+  const hash = location.hash;
+  if(hash.startsWith('#compare=')) {
+    const ids = hash.replace('#compare=','').split(',').filter(id =>
+      ALL_PLATFORMS.some(p=>p.id===id)
+    );
+    if(ids.length >= 2) {
+      S.compareIds  = ids;
+      S.compareMode = true;
+      updateCompareBanner();
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  TOOLTIP — single shared element, event-delegated (attached once)
+// ═══════════════════════════════════════════════════════════════════
+function initSharedTooltip() {
+  const tip = document.getElementById('shared-tip');
+  let hideTimer = null;
+  let activeIcon = null;
+
+  function positionAndShow(icon) {
+    clearTimeout(hideTimer);
+    const text = icon.getAttribute('data-tip');
+    if(!text) return;
+    activeIcon = icon;
+    tip.textContent = text;
+    tip.classList.remove('tip-above');
+    tip.style.right = 'auto';
+
+    // Initial placement below icon
+    const r = icon.getBoundingClientRect();
+    tip.style.left = Math.max(8, r.left - 8) + 'px';
+    tip.style.top  = (r.bottom + 10) + 'px';
+    tip.classList.add('tip-show');
+
+    // After paint: correct overflow
+    requestAnimationFrame(() => {
+      const tr = tip.getBoundingClientRect();
+      if(tr.bottom > window.innerHeight - 12) {
+        tip.style.top = (r.top - tr.height - 10) + 'px';
+        tip.classList.add('tip-above');
+      }
+      if(tr.right > window.innerWidth - 12) {
+        tip.style.left = 'auto';
+        tip.style.right = '12px';
+      }
+    });
+  }
+
+  function hide() {
+    hideTimer = setTimeout(() => {
+      tip.classList.remove('tip-show','tip-above');
+      activeIcon = null;
+    }, 100);
+  }
+
+  // Hover — works even after table re-render (delegation on document)
+  document.addEventListener('mouseover', e => {
+    const icon = e.target.closest('.iico');
+    if(icon) { clearTimeout(hideTimer); positionAndShow(icon); }
+  });
+  document.addEventListener('mouseout', e => {
+    if(e.target.closest('.iico')) hide();
+  });
+
+  // Click toggle (mobile + desktop)
+  document.addEventListener('click', e => {
+    const icon = e.target.closest('.iico');
+    if(icon) {
+      e.stopPropagation();
+      if(activeIcon === icon && tip.classList.contains('tip-show')) {
+        clearTimeout(hideTimer);
+        tip.classList.remove('tip-show','tip-above');
+        activeIcon = null;
+      } else {
+        positionAndShow(icon);
+      }
+      return;
+    }
+    // Click outside → hide
+    if(!e.target.closest('#shared-tip')) hide();
+  }, true);
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape') { clearTimeout(hideTimer); tip.classList.remove('tip-show','tip-above'); activeIcon = null; }
+  });
+}
+
 </script>
+
+<!-- Shared tooltip element -->
+<div id="shared-tip" role="tooltip" aria-live="polite"></div>
+
 </body>
 </html>
